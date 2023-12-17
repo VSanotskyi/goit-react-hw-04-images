@@ -28,34 +28,34 @@ export default function ImageGallery({keyWord}) {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    const getImagesByKeyWord = async () => {
-      try {
-        setLoader(true);
-        const {data: {hits, totalHits}} = await imagesApi(keyWord, page,
-          PER_PAGE);
+    setImages([])
+    setPage(1)
+    getImagesByKeyWord();
+  }, [keyWord]);
 
-        page === 1 ? setImages(updateId(hits)) : setImages(
-          prev => [...prev, ...updateId(hits)]);
-
-        setBtnDisable(calcPage(totalHits, PER_PAGE, page));
-
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoader(false);
-      }
-    };
+  useEffect(() => {
+    if (page === 1) return;
 
     getImagesByKeyWord();
-    
-  }, [keyWord, page]);
+  }, [page]);
 
-  // useEffect(() => {
-  //   if (page === 1) return;
-  //
-  //   getImagesByKeyWord();
-  // }, [page]);
+  async function getImagesByKeyWord() {
+    try {
+      setLoader(true);
+      const {data: {hits, totalHits}} = await imagesApi(keyWord, page,
+        PER_PAGE);
 
+      page === 1 ? setImages(updateId(hits)) : setImages(
+        prev => [...prev, ...updateId(hits)]);
+
+      setBtnDisable(calcPage(totalHits, PER_PAGE, page));
+
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoader(false);
+    }
+  }
 
   const handleClick = () => {
     setPage(prev => prev + 1);
