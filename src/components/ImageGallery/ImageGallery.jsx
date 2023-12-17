@@ -1,8 +1,9 @@
 import {useEffect, useState} from 'react';
 import {nanoid} from 'nanoid';
-import {imagesApi} from '../../api/api';
+
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import Loader from '../Loader/Loader';
+import {imagesApi} from '../../api/api';
 
 const PER_PAGE = 12;
 
@@ -27,35 +28,34 @@ export default function ImageGallery({keyWord}) {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    setImages([]);
-    setPage(1);
+    const getImagesByKeyWord = async () => {
+      try {
+        setLoader(true);
+        const {data: {hits, totalHits}} = await imagesApi(keyWord, page,
+          PER_PAGE);
+
+        page === 1 ? setImages(updateId(hits)) : setImages(
+          prev => [...prev, ...updateId(hits)]);
+
+        setBtnDisable(calcPage(totalHits, PER_PAGE, page));
+
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoader(false);
+      }
+    };
 
     getImagesByKeyWord();
-  }, [keyWord]);
+    
+  }, [keyWord, page]);
 
-  useEffect(() => {
-    if (page === 1) return;
+  // useEffect(() => {
+  //   if (page === 1) return;
+  //
+  //   getImagesByKeyWord();
+  // }, [page]);
 
-    getImagesByKeyWord();
-  }, [page]);
-
-  const getImagesByKeyWord = async () => {
-    try {
-      setLoader(true);
-      const {data: {hits, totalHits}} = await imagesApi(keyWord, page,
-        PER_PAGE);
-
-      page === 1 ? setImages(updateId(hits)) : setImages(
-        prev => [...prev, ...updateId(hits)]);
-
-      setBtnDisable(calcPage(totalHits, PER_PAGE, page));
-
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoader(false);
-    }
-  };
 
   const handleClick = () => {
     setPage(prev => prev + 1);
