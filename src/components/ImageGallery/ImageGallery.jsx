@@ -2,7 +2,7 @@ import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 import css from './ImageGallery.module.css'
 import Loader from "../Loader/Loader";
 
-export default function ImageGallery({images, handleClick, loader}) {
+export default function ImageGallery({images, handleClick, loader, btnDisable}) {
   return (
     <div>
       <ul className={css.imageList}>
@@ -20,6 +20,7 @@ export default function ImageGallery({images, handleClick, loader}) {
           <button
             type="click"
             onClick={handleClick}
+            disabled={btnDisable}
           >load more
           </button>
       }

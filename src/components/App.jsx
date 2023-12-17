@@ -5,7 +5,6 @@ import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Modal from './Modal/Modal';
 import {imagesApi} from "../api/api";
-import Loader from "./Loader/Loader";
 
 const PER_PAGE = 12;
 
@@ -72,6 +71,7 @@ export default function App() {
               images={images}
               handleClick={handleClick}
               loader={loader}
+              btnDisable={btnDisable}
             />
           </ContextForGalleryItem.Provider>
         )
