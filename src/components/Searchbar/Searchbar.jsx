@@ -1,16 +1,17 @@
-import { useState } from 'react';
+import {useState} from 'react';
 
-export default function Searchbar({ setGetSearchWord }) {
+export default function Searchbar({setKeyWord, setPage}) {
   const [search, setSearch] = useState('');
 
-  const handleChange = ({ target: { value } }) => {
+  const handleChange = ({target: {value}}) => {
     setSearch(value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setGetSearchWord(search);
+    setKeyWord(search);
+    setPage(1)
     setSearch('');
   };
 
