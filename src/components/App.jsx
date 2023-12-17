@@ -62,9 +62,6 @@ export default function App() {
         error && <h1>{error}</h1>
       }
       {
-        images?.length === 0 && <h1>Opps, {keyWord} is not defined</h1>
-      }
-      {
         keyWord && (
           <ContextForGalleryItem.Provider value={getElByModal}>
             <ImageGallery
@@ -72,6 +69,7 @@ export default function App() {
               handleClick={handleClick}
               loader={loader}
               btnDisable={btnDisable}
+              keyWord={keyWord}
             />
           </ContextForGalleryItem.Provider>
         )
